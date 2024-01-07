@@ -1,16 +1,14 @@
-package edu.mayo.dicom.parser;
+package bransford.dicom.parser;
 
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import edu.mayo.jpeg.bit8.jpeglib8;
-import edu.mayo.jpeg.bit12_16.jpeglib12_16;
-import edu.mayo.jpeg.bit8.Driver8;
-import edu.mayo.jpeg.bit12_16.Driver12_16;
+import bransford.jpeg.bit8.jpeglib8;
+import bransford.jpeg.bit12_16.jpeglib12_16;
+import bransford.jpeg.bit8.Driver8;
+import bransford.jpeg.bit12_16.Driver12_16;
 
 public class DicomImage
 {

@@ -10,6 +10,7 @@
 # IDE files
 *.iml
 /out/
+/target/
 /.idea/
 
 # BlueJ files

@@ -1,12 +1,10 @@
-package edu.mayo.dicom.parser;
+package bransford.dicom.parser;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
-
-import static edu.mayo.dicom.parser.DCMBuff.system_byte_order;
 
 public class ValueConversions
 {
@@ -48,7 +46,7 @@ public class ValueConversions
 
     public static short shortValue(byte[] array)
     {
-        return shortValue(array, system_byte_order);
+        return shortValue(array, DCMBuff.system_byte_order);
     }
 
     public static short shortValue(byte[] array, ByteOrder byteOrder)
@@ -59,7 +57,7 @@ public class ValueConversions
 
     public static int intValue(byte[] array)
     {
-       return intValue(array, system_byte_order);
+       return intValue(array, DCMBuff.system_byte_order);
     }
 
     public static int intValue(byte[] array, ByteOrder byteOrder)
@@ -70,7 +68,7 @@ public class ValueConversions
 
     public static float floatValue(byte[] chunk, int sizeof_type)
     {
-        ByteBuffer buff = ByteBuffer.wrap(chunk).order(system_byte_order);
+        ByteBuffer buff = ByteBuffer.wrap(chunk).order(DCMBuff.system_byte_order);
         switch (sizeof_type)
         {
             case (2) ->
@@ -90,7 +88,7 @@ public class ValueConversions
 
     public static double doubleValue(byte[] chunk)
     {
-        ByteBuffer buff = ByteBuffer.wrap(chunk).order(system_byte_order);
+        ByteBuffer buff = ByteBuffer.wrap(chunk).order(DCMBuff.system_byte_order);
         return Double.longBitsToDouble(buff.getLong());
     }
 

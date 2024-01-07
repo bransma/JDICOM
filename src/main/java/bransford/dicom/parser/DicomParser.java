@@ -1,10 +1,6 @@
-package edu.mayo.dicom.parser;
+package bransford.dicom.parser;
 
 import java.io.IOException;
-
-import static edu.mayo.dicom.parser.DCMBuff._2bytes;
-import static edu.mayo.dicom.parser.DCMBuff._4bytes;
-import static edu.mayo.dicom.parser.DCMBuff.advance;
 
 public class DicomParser
 {
@@ -34,7 +30,7 @@ public class DicomParser
     {
         boolean isValid = false;
         DCMBuff.setLocationAndRange(128);
-        DCMBuff.advance(_4bytes);
+        DCMBuff.advance(DCMBuff._4bytes);
         String magic_number = DCMBuff.dataChunkToString();
 
         if ("DICM".equals(magic_number))
@@ -94,13 +90,13 @@ public class DicomParser
         bytesRead[0] = 0;
         DicomTag dicom_tag;
 
-        advance(_2bytes);
-        bytesRead[0] += _2bytes;
+        DCMBuff.advance(DCMBuff._2bytes);
+        bytesRead[0] += DCMBuff._2bytes;
         String group = ValueConversions.getHexString(DCMBuff.getChunk());
         group = group.toUpperCase();
 
-        advance(_2bytes);
-        bytesRead[0] += _2bytes;
+        DCMBuff.advance(DCMBuff._2bytes);
+        bytesRead[0] += DCMBuff._2bytes;
         String element = ValueConversions.getHexString(DCMBuff.getChunk());
         element = element.toUpperCase();
         dicom_tag = dicom_dictionary.get_tag(group, element);
@@ -115,7 +111,7 @@ public class DicomParser
 
             // tag was not in the dictionary, create one, populate data is desired, but
             // back up buffer 4 bytes, because didn't really read a tag
-            advance(-1 * bytesRead[0]);
+            DCMBuff.advance(-1 * bytesRead[0]);
         }
 
         return dicom_tag;
@@ -128,8 +124,8 @@ public class DicomParser
         if (is_delim)
         {
             // for delimiters, need to read length field, as per spec
-            advance(_4bytes);
-            bytesRead[0] += _4bytes;
+            DCMBuff.advance(DCMBuff._4bytes);
+            bytesRead[0] += DCMBuff._4bytes;
             value_length = DCMBuff.dataChunkToInt();
             dicomTag.setValueLength(value_length);
             return dicomTag;
@@ -137,20 +133,20 @@ public class DicomParser
 
         if (is_explicit)
         {
-            advance(_2bytes);
-            bytesRead[0] += _2bytes;
+            DCMBuff.advance(DCMBuff._2bytes);
+            bytesRead[0] += DCMBuff._2bytes;
             String vr = DCMBuff.dataChunkToString();
             dicomTag.setVR(vr);
 
             // read value length
-            advance(_2bytes);
-            bytesRead[0] += _2bytes;
+            DCMBuff.advance(DCMBuff._2bytes);
+            bytesRead[0] += DCMBuff._2bytes;
 
             if (dicomTag.isExplicitVRReserved())
             {
                 // skip reserved 2 bytes, advance to read value length
-                advance(_4bytes);
-                bytesRead[0] += _4bytes;
+                DCMBuff.advance(DCMBuff._4bytes);
+                bytesRead[0] += DCMBuff._4bytes;
                 value_length = DCMBuff.dataChunkToInt();
             }
             else
@@ -160,15 +156,15 @@ public class DicomParser
         }
         else
         {
-            advance(_4bytes);
-            bytesRead[0] += _4bytes;
+            DCMBuff.advance(DCMBuff._4bytes);
+            bytesRead[0] += DCMBuff._4bytes;
             value_length = DCMBuff.dataChunkToInt();
         }
 
         dicomTag.setValueLength(value_length);
         if (read_value && !dicomTag.isUndefinedLength())
         {
-            advance(value_length);
+            DCMBuff.advance(value_length);
             bytesRead[0] += value_length;
             byte[] value_bytes = DCMBuff.getChunk();
             dicomTag.setRawValue(value_bytes);
@@ -237,17 +233,17 @@ public class DicomParser
 
         while (true)
         {
-            advance(_2bytes);
+            DCMBuff.advance(DCMBuff._2bytes);
             String group = ValueConversions.getHexString(DCMBuff.getChunk());
             group = group.toUpperCase();
             if (group.equals("0002"))
             {
-                advance(_2bytes);
+                DCMBuff.advance(DCMBuff._2bytes);
                 String element = ValueConversions.getHexString(DCMBuff.getChunk());
                 element = element.toUpperCase();
                 dicom_tag = dicom_dictionary.get_tag(group, element);
 
-                advance(_2bytes);
+                DCMBuff.advance(DCMBuff._2bytes);
                 if (dicom_tag == null)
                 {
                     dicom_tag = new DicomTag();
@@ -258,11 +254,11 @@ public class DicomParser
 
                 // read value length
                 int value_length;
-                advance(_2bytes);
+                DCMBuff.advance(DCMBuff._2bytes);
                 if (dicom_tag.isExplicitVRReserved())
                 {
                     // skip reserved 2 bytes, advance to read value length
-                    advance(_4bytes);
+                    DCMBuff.advance(DCMBuff._4bytes);
                     value_length = DCMBuff.dataChunkToInt();
                 }
                 else
@@ -274,7 +270,7 @@ public class DicomParser
                 dicom_tag.valueLength = value_length;
 
                 // read the data proper
-                advance(value_length);
+                DCMBuff.advance(value_length);
                 byte[] value_bytes = DCMBuff.getChunk();
                 dicom_tag.setRawValue(value_bytes);
 
@@ -289,7 +285,7 @@ public class DicomParser
             {
                 // not in the group tags, back up 2 bytes, and break out of
                 // read group 2 tags
-                advance(-1 * _2bytes);
+                DCMBuff.advance(-1 * DCMBuff._2bytes);
                 break;
             }
         }
@@ -426,7 +422,7 @@ public class DicomParser
         }
 
         // back up and allow the loops below to read all the tags
-        advance(-1 * _4bytes);
+        DCMBuff.advance(-1 * DCMBuff._4bytes);
         boolean is_sequence_delimiter = false;
 
         // this begins the item sequence, until we hit another sequence (which results in recursion)
@@ -484,8 +480,8 @@ public class DicomParser
 
         if (item_tag.isExplicit)
         {
-            advance(_4bytes);
-            bytesRead[0] += _4bytes;
+            DCMBuff.advance(DCMBuff._4bytes);
+            bytesRead[0] += DCMBuff._4bytes;
             int item_length = DCMBuff.dataChunkToInt();
             item_tag.setValueLength(item_length);
         }
@@ -495,7 +491,7 @@ public class DicomParser
         {
             item = readBaseTag(bytesReturned);
             bytesRead[0] += bytesReturned[0];
-            advance(-1 * _4bytes);
+            DCMBuff.advance(-1 * DCMBuff._4bytes);
             if (item.isItemDelimiter)
             {
                 item_tag.addItem(item);
@@ -582,10 +578,10 @@ public class DicomParser
                 DicomTag tag = readBaseTag(bytesRead);
                 if (tag.isItem)
                 {
-                    advance(_4bytes);
-                    bytesRead[0] += _4bytes;
+                    DCMBuff.advance(DCMBuff._4bytes);
+                    bytesRead[0] += DCMBuff._4bytes;
                     int value_length = DCMBuff.dataChunkToInt();
-                    advance(value_length);
+                    DCMBuff.advance(value_length);
                     bytesRead[0] += value_length;
                     byte[] value_bytes = DCMBuff.getChunk();
                     tag.setRawValue(value_bytes);
@@ -602,7 +598,7 @@ public class DicomParser
         }
         else
         {
-            advance(pixel_data_tag.valueLength);
+            DCMBuff.advance(pixel_data_tag.valueLength);
             byte[] value_bytes = DCMBuff.getChunk();
             pixel_data_tag.setRawValue(value_bytes);
         }

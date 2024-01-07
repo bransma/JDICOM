@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>edu.mayo.dicom.parser</groupId>
+    <groupId>bransford.dicom.parser</groupId>
     <artifactId>JDicomParser</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -37,7 +37,7 @@
             <version>4.13.2</version>
         </dependency>
         <dependency>
-            <groupId>edu.mayo.jpeg</groupId>
+            <groupId>bransford.jpeg</groupId>
             <artifactId>JIJG</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
@@ -51,7 +51,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>edu.mayo.dicom.parser.Main</mainClass>
+                            <mainClass>bransford.dicom.parser.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

@@ -1,4 +1,4 @@
-package edu.mayo.dicom.parser;
+package bransford.dicom.parser;
 
 public class DicomTags
 {

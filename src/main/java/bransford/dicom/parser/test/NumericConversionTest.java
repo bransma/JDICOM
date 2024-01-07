@@ -1,6 +1,6 @@
-package edu.mayo.dicom.parser.test;
+package bransford.dicom.parser.test;
 
-import edu.mayo.dicom.parser.ValueConversions;
+import bransford.dicom.parser.ValueConversions;
 import org.junit.Assert;
 import org.junit.Test;
 

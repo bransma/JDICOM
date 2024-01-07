@@ -1,8 +1,8 @@
-package edu.mayo.dicom.parser.test;
+package bransford.dicom.parser.test;
 
-import edu.mayo.dicom.parser.DCMBuff;
-import edu.mayo.dicom.parser.DicomObject;
-import edu.mayo.dicom.parser.DicomParser;
+import bransford.dicom.parser.DCMBuff;
+import bransford.dicom.parser.DicomObject;
+import bransford.dicom.parser.DicomParser;
 import org.junit.Assert;
 import org.junit.Test;
 

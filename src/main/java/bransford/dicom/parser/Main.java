@@ -1,4 +1,4 @@
-package edu.mayo.dicom.parser;
+package bransford.dicom.parser;
 
 import java.io.IOException;
 
